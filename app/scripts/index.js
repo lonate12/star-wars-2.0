@@ -5,4 +5,4 @@ require('./router.js');
 
 $(function(){
   Backbone.history.start();
-})
+});

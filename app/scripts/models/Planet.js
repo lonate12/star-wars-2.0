@@ -8,12 +8,12 @@ var Planet = Thing.extend({
   loadHints: function(){
     var self = this;
 
-    if (this.get('residents') != 0) {
+    if (this.get('residents') !== 0) {
       Promise.all(this.multiUrlRequests(self.get('residents'))).then(function(responses){
         var residents = '';
 
         responses.forEach(function(response, i){
-          if (i == 0) {
+          if (i === 0) {
             residents += response.name;
             return;
           }
@@ -35,7 +35,7 @@ var Planet = Thing.extend({
     return "This planet's terrain is: " + this.get('terrain');
   },
   hint3: function(){
-    if (this.get('residents') != 0) {
+    if (this.get('residents').length !== 0) {
       return "Notable residents include: " + this.get('residents');
     }
 
