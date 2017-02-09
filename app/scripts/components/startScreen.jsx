@@ -3,7 +3,9 @@ var React = require('react');
 var StartScreen = React.createClass({
   render: function(){
     return(
-      <h1>Test Start Screen</h1>
+      <div className="row fs-container">
+        <img src="./images/star-wars-logo.svg"></img>
+      </div>
     );
   }
 });

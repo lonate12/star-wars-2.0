@@ -16,6 +16,15 @@ img {
   max-width: 100%;
 }
 
+// General formatting for containers
+
+.fs-container {
+  height: 100vh;
+  background-color: black;
+}
+
+// Displaying empty letters
+
 .box {
   display: inline-block;
   width: 20px;
