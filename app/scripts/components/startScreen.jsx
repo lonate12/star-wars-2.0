@@ -13,6 +13,7 @@ var StartScreen = React.createClass({
 
     document.getElementById('logo').addEventListener("transitionend", function(){
       self.setState({loadCompleted: true});
+      document.getElementsByTagName('audio')[0].play();
     });
 
     setTimeout(function(){
@@ -28,6 +29,7 @@ var StartScreen = React.createClass({
       <div className="row fs-container">
         <img  id="logo" src="./images/star-wars-logo.svg" className="center-block"></img>
         <button onClick={this.nextScreen} className={this.state.loadCompleted ? "start-button center-block" : "hide"}>Click here to begin!!!</button>
+        <audio src="sounds/star-wars-theme-song.mp3"></audio>
       </div>
     );
   },
