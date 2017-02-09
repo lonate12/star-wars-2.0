@@ -3,17 +3,16 @@ var $ = require('jquery');
 
 var Person = Thing.extend({
   urlRoot: function(){
-    return 'http://swapi.co/api/people/' + this.get('personNumber') + '/';
+    return 'http://swapi.co/api/people/' + this.get('number') + '/';
   },
   loadHints: function(){
     var self = this;
 
-    $.ajax(this.get('homeworld')).then(function(response){
-      self.set('homeworld', response.name);
-    });
-
-    $.ajax(this.get('species')[0]).then(function(response){
-      self.set('species', response.name);
+    Promise.all([$.ajax(this.get('homeworld')), $.ajax(this.get('species')[0])]).then(function(responses){
+      self.set({
+        homeworld: responses[0].name,
+        species: responses[1].name
+      });
     });
   },
   hint1: function(){
