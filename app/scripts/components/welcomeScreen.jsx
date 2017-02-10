@@ -1,6 +1,19 @@
 var React = require('react');
+var Backbone = require('backbone');
 
 var WelcomeScreen = React.createClass({
+  nextScreen: function(){
+    var audioTag = document.getElementsByTagName('audio')[0];
+    audioTag.addEventListener('ended', namedFunction);
+
+    function namedFunction(){
+      Backbone.history.navigate('select/', {trigger: true});
+      audioTag.removeEventListener('ended', namedFunction);
+    }
+
+    audioTag.play();
+
+  },
   render: function(){
     return(
       <div className="fs-container row">
@@ -19,6 +32,9 @@ var WelcomeScreen = React.createClass({
             <li>If you guess the word within 5 wrong guesses, you win!</li>
           </ol>
         </div>
+
+        <button onClick={this.nextScreen} type="button">I'm ready, let's do this!</button>
+        <audio src="sounds/force2.mp3"></audio>
 
       </div>
     );

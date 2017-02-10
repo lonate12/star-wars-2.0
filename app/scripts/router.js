@@ -6,12 +6,14 @@ var ReactDOM = require('react-dom');
 // Local modules
 var StartScreen = require('./components/startScreen.jsx').StartScreen;
 var WelcomeScreen = require('./components/welcomeScreen.jsx').WelcomeScreen;
+var SelectScreen = require('./components/selectScreen.jsx').SelectScreen;
 
 
 var AppRouter = Backbone.Router.extend({
   routes: {
     '': 'index',
-    'welcome/': 'welcome'
+    'welcome/': 'welcome',
+    'select/': 'select'
   },
   index: function(){
     ReactDOM.render(
@@ -22,6 +24,12 @@ var AppRouter = Backbone.Router.extend({
   welcome: function(){
     ReactDOM.render(
       React.createElement(WelcomeScreen),
+      document.getElementById('app')
+    );
+  },
+  select: function(){
+    ReactDOM.render(
+      React.createElement(SelectScreen),
       document.getElementById('app')
     );
   }

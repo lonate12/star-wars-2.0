@@ -11,10 +11,13 @@ var StartScreen = React.createClass({
     var max = (screen.width * .6) + 'px';
     var self = this;
 
-    document.getElementById('logo').addEventListener("transitionend", function(){
+    document.getElementById('logo').addEventListener("transitionend", namedFunction);
+    
+    function namedFunction(){
+      document.getElementById('logo').removeEventListener("transitionend", namedFunction);
       self.setState({loadCompleted: true});
       document.getElementsByTagName('audio')[0].play();
-    });
+    }
 
     setTimeout(function(){
       document.getElementById('logo').style.width = max;
