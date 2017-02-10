@@ -48,3 +48,34 @@ img {
 .letter {
   border-bottom: 2px solid black;
 }
+
+// Select Screen
+.select-div {
+  position: relative;
+  height: 80vh;
+}
+
+.select-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  color: white;
+  background-color: rgba(0,0,0,.4);
+  text-align: center;
+  margin: 0;
+  padding-top: 30vh;
+}
+
+.people {
+  background-image: url('../images/han-solo.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+
+.planets {
+  background-image: url('../images/planet.jpg');
+  background-size: cover;
+  background-position: center center;
+}
