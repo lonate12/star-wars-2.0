@@ -1,6 +1,5 @@
 var React = require('react');
 var Planet = require('../models/Planet').Planet;
-var PlayingField = require('./layout/playingField.jsx').PlayingField;
 var $ = require('jquery');
 
 var PlanetsContainer = React.createClass({
@@ -8,7 +7,10 @@ var PlanetsContainer = React.createClass({
     var planet = new Planet();
 
     return{
-      planet: planet
+      planet: planet,
+      guessesLeft: 5,
+      hintsLeft: 3,
+      lettersGuessed: []
     }
   },
   loadData: function(){
@@ -16,6 +18,9 @@ var PlanetsContainer = React.createClass({
     var self = this;
 
     planet.fetch().then(function(){
+      var nameArray = planet.get('name').split('');
+
+      planet.set('nameArray', nameArray);
       self.setState({planet: planet});
       planet.loadHints(function(){
         self.setState({planet:planet});
@@ -28,10 +33,29 @@ var PlanetsContainer = React.createClass({
     this.state.planet.getCount(self.loadData);
   },
   render: function(){
+    var planet = this.state.planet;
+    var emptyDivs;
+
+    if(planet.get('nameArray')){
+      emptyDivs = planet.get('nameArray').map(function(letter, i){
+        return(
+          <div className = "box letter" key = {i}></div>
+        )
+      });
+    }
+
     return(
-      <PlayingField>
-        <h1>This is a test</h1>
-      </PlayingField>
+      <div className="row fs-container">
+        <div className="guess-left">
+          <h1>Guesses Left: {this.state.guessesLeft}</h1>
+        </div>
+        <div id="word-container">
+          {emptyDivs}
+        </div>
+        <div>
+          <h1>Hints left: {this.state.hintsLeft}</h1>
+        </div>
+      </div>
     );
   }
 });
