@@ -6,7 +6,7 @@ var Thing = Backbone.Model.extend({
   createDiv: function(){
     var name = this.get('name');
 
-    _.each(name, function(letter) {
+    name.forEach(function(letter) {
       var div = document.createElement('div');
 
       div.setAttribute('class', 'box');
@@ -19,15 +19,26 @@ var Thing = Backbone.Model.extend({
       document.getElementById('word-container').appendChild(div);
     });
   },
-  setNumber: function(number){
-    this.set('number', number);
+  getCount: function(callback){
+    var url = 'http://swapi.co/api/' + this.get('thing') + '/';
+    var self = this;
+
+    $.ajax(url).then(function(response){
+      var count = response.count;
+      var number = Math.ceil(Math.random() * count);
+
+      self.set('number', number);
+      callback();
+    });
   },
   multiUrlRequests(urlArray){
     var requestsArray = [];
 
-    urlArray.forEach(function(url){
-      requestsArray.push($.ajax(url));
-    });
+    if (urlArray) {
+      urlArray.forEach(function(url){
+        requestsArray.push($.ajax(url));
+      });
+    }
 
     return requestsArray;
   }
@@ -35,4 +46,4 @@ var Thing = Backbone.Model.extend({
 
 module.exports = {
   Thing: Thing
-}
+};

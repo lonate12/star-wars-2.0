@@ -2,31 +2,42 @@ var Thing = require('./Thing.js').Thing;
 var $ = require('jquery');
 
 var Planet = Thing.extend({
+  defaults: {
+    thing: 'planets'
+  },
   urlRoot: function(){
     return 'http://swapi.co/api/planets/' + this.get('number') + '/';
   },
-  loadHints: function(){
+  loadHints: function(callback){
     var self = this;
 
-    if (this.get('residents') !== 0) {
-      Promise.all(this.multiUrlRequests(self.get('residents'))).then(function(responses){
+    if (this.get('residents').length !== 0) {
+      // console.log('residents is not equal to 0');
+      Promise.all(self.multiUrlRequests(self.get('residents'))).then(function(responses){
         var residents = '';
+        // console.log(responses);
 
-        responses.forEach(function(response, i){
-          if (i === 0) {
-            residents += response.name;
-            return;
-          }
+        if (responses.length === 1) {
+          residents += responses[0].name;
+          // console.log('There\'s only 1 notable resident.');
+        } else {
+          // console.log('There\'s ' + responses.length + ' notable residents.');
+          responses.forEach(function(response, i){
 
-          residents += ', ' + response.name;
-          self.set('residents', residents);
-        });
+            if(i === 0){
+              residents += response.name;
+              return;
+            }
 
-        console.log(self.get('residents'));
+            residents += ', ' + response.name;
+          });
+        }
+
+        self.set('residents', residents);
+        // console.log('Planet residents should be loaded.');
+        callback();
       });
     }
-
-    return null;
   },
   hint1: function(){
     return "This planet's climate is: " + this.get('climate');
@@ -39,7 +50,7 @@ var Planet = Thing.extend({
       return "Notable residents include: " + this.get('residents');
     }
 
-    return "This planet has no notable residents."
+    return "This planet has no notable residents.";
   }
 });
 

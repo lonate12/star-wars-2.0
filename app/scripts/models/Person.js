@@ -2,6 +2,9 @@ var Thing = require('./Thing.js').Thing;
 var $ = require('jquery');
 
 var Person = Thing.extend({
+  defaults: {
+    thing: 'people'
+  },
   urlRoot: function(){
     return 'http://swapi.co/api/people/' + this.get('number') + '/';
   },

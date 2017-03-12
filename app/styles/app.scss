@@ -16,6 +16,11 @@ img {
   max-width: 100%;
 }
 
+@font-face {
+  font-family: 'star';
+  src: url('../fonts/Starjedi.ttf');
+}
+
 // General formatting for containers
 
 .fs-container {
@@ -34,6 +39,7 @@ img {
   padding: 10px;
   border-radius: 6px;
   background-color: yellow;
+  font-family: 'star', serif;
 }
 
 
