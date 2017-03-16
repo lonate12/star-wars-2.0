@@ -14,7 +14,8 @@ var PlanetsContainer = React.createClass({
       guess: '',
       hint1: false,
       hint2: false,
-      hint3: false
+      hint3: false,
+      end: false
     }
   },
   loadData: function(){
@@ -59,13 +60,15 @@ var PlanetsContainer = React.createClass({
 
       if (nameArray.indexOf(guess) === -1) {
         console.log('Wrong!');
+
+        this.state.guessesLeft === 1 ? this.state.end = true : null;
         this.setState({
-          guessesLeft: this.state.guessesLeft - 1
+          guessesLeft: this.state.guessesLeft - 1,
+          end: this.state.end
         });
       } else {
         var guessLocations = this.getIndexes(nameArray, guess);
         var test = document.getElementById('word-container').querySelectorAll('div');
-        console.log(test);
 
         guessLocations.forEach(function(i){
           document.getElementById('word-container').querySelectorAll('div')[i].innerHTML = self.state.guess.toUpperCase();
@@ -109,7 +112,6 @@ var PlanetsContainer = React.createClass({
   },
   render: function(){
     console.log(this.state.planet.get('name'));
-    console.log(this.state.lettersGuessed);
     var planet = this.state.planet;
     var emptyDivs;
     var lettersUsed = this.state.lettersGuessed.map(function(letter, i){
@@ -120,9 +122,15 @@ var PlanetsContainer = React.createClass({
 
     if(planet.get('nameArray')){
       emptyDivs = planet.get('nameArray').map(function(letter, i){
-        return(
-          <div className = "box letter" key = {i}></div>
-        )
+        if (letter === " " | "-") {
+          return(
+            <div className = "box" key = {i}></div>
+          )
+        } else {
+          return(
+            <div className = "box letter" key = {i}></div>
+          )
+        }
       });
     }
 
@@ -145,8 +153,10 @@ var PlanetsContainer = React.createClass({
           <div>{this.state.hint2 ? this.state.planet.hint2() : null}</div>
           <div>{this.state.hint3 ? this.state.planet.hint3() : null}</div>
         </div>
+        <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toUpperCase() : null}</div>
         <button
           type="button"
+          disabled={this.state.end ? true : false}
           onClick={this.getHint}>{this.state.hintsLeft > 0 ?
             'Give me a hint' : 'Sorry, you don\'t have and hints left'}
         </button>
@@ -159,6 +169,7 @@ var PlanetsContainer = React.createClass({
             name="guess"
             onChange={this.updateGuess}
             value={this.state.guess}
+            disabled={this.state.end ? true : false}
             maxLength="1"
           ></input>
           <button type="submit">Submit guess</button>
