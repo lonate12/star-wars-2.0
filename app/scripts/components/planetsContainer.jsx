@@ -22,6 +22,7 @@ var PlanetsContainer = React.createClass({
     var self = this;
 
     planet.fetch().then(function(){
+      planet.set({name: planet.get('name').toLowerCase()});
       var nameArray = planet.get('name').split('');
 
       planet.set('nameArray', nameArray);
@@ -36,21 +37,39 @@ var PlanetsContainer = React.createClass({
 
     this.state.planet.getCount(self.loadData);
   },
+  getIndexes: function(arr, val){
+    var indexes = [], i=-1;
+
+    while((i=arr.indexOf(val, i+1)) !== -1) {
+      indexes.push(i);
+    }
+
+    return indexes;
+  },
   checkGuess: function(e){
     e.preventDefault();
     var guess = this.state.guess;
     var nameArray = this.state.planet.get('nameArray');
     var lettersGuessed = this.state.lettersGuessed;
+    var i = -1;
+    var self = this;
 
     if (lettersGuessed.indexOf(guess) === -1) {
-      var newArray = this.state.lettersGuessed.push(guess);
+      this.state.lettersGuessed.push(guess);
 
-      if ( nameArray.indexOf(guess) === -1) {
+      if (nameArray.indexOf(guess) === -1) {
         console.log('Wrong!');
         this.setState({
           guessesLeft: this.state.guessesLeft - 1
         });
       } else {
+        var guessLocations = this.getIndexes(nameArray, guess);
+        var test = document.getElementById('word-container').querySelectorAll('div');
+        console.log(test);
+
+        guessLocations.forEach(function(i){
+          document.getElementById('word-container').querySelectorAll('div')[i].innerHTML = self.state.guess.toUpperCase();
+        });
         console.log('Yep, it\'s there.');
       }
     } else {
@@ -61,8 +80,9 @@ var PlanetsContainer = React.createClass({
   },
   updateGuess: function(e){
     e.preventDefault();
+    var lowerCaseInput = e.target.value.toLowerCase();
 
-    this.setState({guess: e.target.value});
+    this.setState({guess: lowerCaseInput});
   },
   getHint: function(){
     if (this.state.hintsLeft <= 0) {
@@ -88,6 +108,7 @@ var PlanetsContainer = React.createClass({
     }
   },
   render: function(){
+    console.log(this.state.planet.get('name'));
     console.log(this.state.lettersGuessed);
     var planet = this.state.planet;
     var emptyDivs;
@@ -124,7 +145,11 @@ var PlanetsContainer = React.createClass({
           <div>{this.state.hint2 ? this.state.planet.hint2() : null}</div>
           <div>{this.state.hint3 ? this.state.planet.hint3() : null}</div>
         </div>
-        <button type="button" onClick={this.getHint}>Give me a hint</button>
+        <button
+          type="button"
+          onClick={this.getHint}>{this.state.hintsLeft > 0 ?
+            'Give me a hint' : 'Sorry, you don\'t have and hints left'}
+        </button>
         <form onSubmit={this.checkGuess}>
           <label htmlFor="guess">Enter Guess</label>
           <input
