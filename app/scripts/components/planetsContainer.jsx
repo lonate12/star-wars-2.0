@@ -136,14 +136,16 @@ var PlanetsContainer = React.createClass({
 
     return(
       <div className="row fs-container">
-        <div className="guess-left">
-          <h1>Guesses Left: {this.state.guessesLeft}</h1>
+        <div className="col-md-12 clear-fix">
+          <div className="guess-left pull-left">
+            <h1>Guesses Left: {this.state.guessesLeft}</h1>
+          </div>
+          <div className="pull-right">
+            <h1>Hints left: {this.state.hintsLeft}</h1>
+          </div>
         </div>
-        <div id="word-container">
+        <div id="word-container" className="text-center">
           {emptyDivs}
-        </div>
-        <div>
-          <h1>Hints left: {this.state.hintsLeft}</h1>
         </div>
         <div>
           {lettersUsed}
@@ -155,24 +157,28 @@ var PlanetsContainer = React.createClass({
         </div>
         <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toUpperCase() : null}</div>
         <button
+          className="btn btn-success pull-right"
           type="button"
           disabled={this.state.end ? true : false}
           onClick={this.getHint}>{this.state.hintsLeft > 0 ?
             'Give me a hint' : 'Sorry, you don\'t have and hints left'}
         </button>
-        <form onSubmit={this.checkGuess}>
-          <label htmlFor="guess">Enter Guess</label>
-          <input
-            type="text"
-            id="guess"
-            autoFocus="true"
-            name="guess"
-            onChange={this.updateGuess}
-            value={this.state.guess}
-            disabled={this.state.end ? true : false}
-            maxLength="1"
-          ></input>
-          <button type="submit">Submit guess</button>
+        <form onSubmit={this.checkGuess} className="text-center">
+          <div className="form-group width-letter-size text-center">
+            <label htmlFor="guess" className="hidden">Enter Guess</label>
+            <input
+              className="form-control"
+              type="text"
+              id="guess"
+              autoFocus="true"
+              name="guess"
+              onChange={this.updateGuess}
+              value={this.state.guess}
+              disabled={this.state.end ? true : false}
+              maxLength="1"
+            ></input>
+          </div>
+        <button type="submit" className="btn btn-success">Submit guess</button>
         </form>
       </div>
     );
