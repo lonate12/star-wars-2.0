@@ -116,7 +116,7 @@ var PlanetsContainer = React.createClass({
     var emptyDivs;
     var lettersUsed = this.state.lettersGuessed.map(function(letter, i){
       return(
-        <span key={i}>{letter}</span>
+        <span className="letters-guessed" key={i}>{letter}</span>
       )
     });
 
@@ -147,7 +147,7 @@ var PlanetsContainer = React.createClass({
         <div id="word-container" className="text-center">
           {emptyDivs}
         </div>
-        <div>
+        <div className="text-center">
           {lettersUsed}
         </div>
         <div id="hints">
@@ -157,13 +157,14 @@ var PlanetsContainer = React.createClass({
         </div>
         <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toUpperCase() : null}</div>
         <button
-          className="btn btn-success pull-right"
+          className={this.state.hintsLeft > 0 ? "btn btn-success pull-right" : "hide"}
           type="button"
           disabled={this.state.end ? true : false}
-          onClick={this.getHint}>{this.state.hintsLeft > 0 ?
-            'Give me a hint' : 'Sorry, you don\'t have and hints left'}
+          onClick={this.getHint}
+        >
+          Give me a hint
         </button>
-        <form onSubmit={this.checkGuess} className="text-center">
+        <form onSubmit={this.checkGuess} className={this.state.end ? "hide" : "text-center"}>
           <div className="form-group width-letter-size text-center">
             <label htmlFor="guess" className="hidden">Enter Guess</label>
             <input
@@ -174,7 +175,6 @@ var PlanetsContainer = React.createClass({
               name="guess"
               onChange={this.updateGuess}
               value={this.state.guess}
-              disabled={this.state.end ? true : false}
               maxLength="1"
             ></input>
           </div>

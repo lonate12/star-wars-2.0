@@ -21,6 +21,10 @@ img {
   src: url('../fonts/Starjedi.ttf');
 }
 
+body {
+  color: white;
+}
+
 // General formatting for containers
 
 .fs-container {
@@ -88,6 +92,11 @@ img {
 }
 
 .width-letter-size {
-  width: 20px;
+  width: 50px;
   margin: 5px auto;
+}
+
+.letters-guessed {
+  font-size: 30px;
+
 }
