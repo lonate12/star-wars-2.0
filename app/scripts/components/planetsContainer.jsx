@@ -15,18 +15,39 @@ var PlanetsContainer = React.createClass({
       hint1: false,
       hint2: false,
       hint3: false,
-      end: false
+      end: false,
+      score: 0
     }
+  },
+  getWinningScore: function(arr){
+    var winningScore = 0;
+
+    arr.forEach(function(letter){
+      if (letter === " " | "-") {
+        return;
+      } else {
+        winningScore += 1;
+      }
+    });
+
+    return winningScore;
   },
   loadData: function(){
     var planet = this.state.planet;
     var self = this;
 
     planet.fetch().then(function(){
-      planet.set({name: planet.get('name').toLowerCase()});
-      var nameArray = planet.get('name').split('');
+      var nameArray = planet.get('name').toLowerCase().split('');
 
-      planet.set('nameArray', nameArray);
+      planet.set({
+        name: planet.get('name').toLowerCase(),
+        nameArray: nameArray,
+        winningScore: self.getWinningScore(nameArray)
+      });
+
+      console.log(self.state.planet);
+
+      // planet.set('nameArray', nameArray);
       self.setState({planet: planet});
       planet.loadHints(function(){
         self.setState({planet:planet});
@@ -71,6 +92,7 @@ var PlanetsContainer = React.createClass({
         var test = document.getElementById('word-container').querySelectorAll('div');
 
         guessLocations.forEach(function(i){
+          self.state.score ++;
           document.getElementById('word-container').querySelectorAll('div')[i].innerHTML = self.state.guess.toUpperCase();
         });
         console.log('Yep, it\'s there.');
@@ -112,6 +134,7 @@ var PlanetsContainer = React.createClass({
   },
   render: function(){
     console.log(this.state.planet.get('name'));
+    console.warn(this.state.score);
     var planet = this.state.planet;
     var emptyDivs;
     var lettersUsed = this.state.lettersGuessed.map(function(letter, i){
