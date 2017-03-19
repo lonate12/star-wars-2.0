@@ -1,6 +1,10 @@
+// 3rd Party Imports
 var React = require('react');
 var Planet = require('../models/Planet').Planet;
 var $ = require('jquery');
+
+// Local Imports
+var WinningScreen = require('./display/win.jsx').WinningScreen;
 
 var PlanetsContainer = React.createClass({
   getInitialState: function(){
@@ -16,7 +20,8 @@ var PlanetsContainer = React.createClass({
       hint2: false,
       hint3: false,
       end: false,
-      score: 0
+      score: 0,
+      win: false
     }
   },
   getWinningScore: function(arr){
