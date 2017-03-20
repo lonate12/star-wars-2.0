@@ -2,6 +2,8 @@
 var React = require('react');
 var Planet = require('../models/Planet').Planet;
 var $ = require('jquery');
+var Modal = require('react-bootstrap').Modal;
+
 
 // Local Imports
 var WinningScreen = require('./display/win.jsx').WinningScreen;
@@ -21,8 +23,15 @@ var PlanetsContainer = React.createClass({
       hint3: false,
       end: false,
       score: 0,
-      win: false
+      win: false,
+      showModal: false
     }
+  },
+  open: function(){
+    this.setState({showModal: true});
+  },
+  close: function(){
+    this.setState({showModal: false});
   },
   getWinningScore: function(arr){
     var winningScore = 0;
@@ -52,7 +61,6 @@ var PlanetsContainer = React.createClass({
 
       console.log(self.state.planet);
 
-      // planet.set('nameArray', nameArray);
       self.setState({planet: planet});
       planet.loadHints(function(){
         self.setState({planet:planet});
@@ -208,6 +216,14 @@ var PlanetsContainer = React.createClass({
           </div>
         <button type="submit" className="btn btn-success">Submit guess</button>
         </form>
+        <button type="button" onClick={this.open}>Show Modal</button>
+        <Modal
+          animation={true}
+          show={this.state.showModal}
+          onHide={this.close}
+        >
+          <h1 className="text-center">This is another test</h1>
+        </Modal>
       </div>
     );
   }
