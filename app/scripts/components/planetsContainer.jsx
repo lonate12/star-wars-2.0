@@ -102,11 +102,12 @@ var PlanetsContainer = React.createClass({
         });
       } else {
         var guessLocations = this.getIndexes(nameArray, guess);
-        var test = document.getElementById('word-container').querySelectorAll('div');
+        var test = document.getElementById('word-container').querySelectorAll('h2');
 
         guessLocations.forEach(function(i){
           self.state.score ++;
-          document.getElementById('word-container').querySelectorAll('div')[i].innerHTML = self.state.guess.toUpperCase();
+
+          document.getElementById('word-container').querySelectorAll('h2')[i].appendChild(document.createTextNode(self.state.guess));
         });
         console.log('Yep, it\'s there.');
       }
@@ -160,11 +161,11 @@ var PlanetsContainer = React.createClass({
       emptyDivs = planet.get('nameArray').map(function(letter, i){
         if (letter === " " | "-") {
           return(
-            <div className = "box" key = {i}></div>
+            <h2 className = "box" key = {i}></h2>
           )
         } else {
           return(
-            <div className = "box letter" key = {i}></div>
+            <h2 className = "box letter" key = {i}></h2>
           )
         }
       });
@@ -187,8 +188,8 @@ var PlanetsContainer = React.createClass({
         <div className="text-center">
           {lettersUsed}
         </div>
-        <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toUpperCase() : null}</div>
-        <form onSubmit={this.checkGuess} className={this.state.end ? "hide" : "text-center"}>
+        <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toLowerCase() : null}</div>
+        <form onSubmit={this.checkGuess} className={this.state.end ? "hide" : "text-center"} autoComplete="off">
           <div className="form-group width-letter-size text-center">
             <label htmlFor="guess" className="hidden">Enter Guess</label>
             <input
