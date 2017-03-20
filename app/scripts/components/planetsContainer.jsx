@@ -171,13 +171,14 @@ var PlanetsContainer = React.createClass({
     }
 
     return(
-      <div className="row fs-container">
+      <div className="row fs-container playing-field">
         <div className="col-md-12 clear-fix">
           <div className="guess-left pull-left">
-            <h1>Guesses Left: {this.state.guessesLeft}</h1>
+            <h1 className="outline">Guesses Left: {this.state.guessesLeft}</h1>
           </div>
           <div className="pull-right">
-            <h1>Hints left: {this.state.hintsLeft}</h1>
+            <h1 className="outline">Hints left: {this.state.hintsLeft}</h1>
+            <button className="btn btn-success pull-right" type="button" onClick={this.open}>Show Hints</button>
           </div>
         </div>
         <div id="word-container" className="text-center">
@@ -186,20 +187,7 @@ var PlanetsContainer = React.createClass({
         <div className="text-center">
           {lettersUsed}
         </div>
-        <div id="hints">
-          <div>{this.state.hint1 ? this.state.planet.hint1() : null}</div>
-          <div>{this.state.hint2 ? this.state.planet.hint2() : null}</div>
-          <div>{this.state.hint3 ? this.state.planet.hint3() : null}</div>
-        </div>
         <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toUpperCase() : null}</div>
-        <button
-          className={this.state.hintsLeft > 0 ? "btn btn-success pull-right" : "hide"}
-          type="button"
-          disabled={this.state.end ? true : false}
-          onClick={this.getHint}
-        >
-          Give me a hint
-        </button>
         <form onSubmit={this.checkGuess} className={this.state.end ? "hide" : "text-center"}>
           <div className="form-group width-letter-size text-center">
             <label htmlFor="guess" className="hidden">Enter Guess</label>
@@ -216,13 +204,25 @@ var PlanetsContainer = React.createClass({
           </div>
         <button type="submit" className="btn btn-success">Submit guess</button>
         </form>
-        <button type="button" onClick={this.open}>Show Modal</button>
         <Modal
           animation={true}
           show={this.state.showModal}
           onHide={this.close}
         >
-          <h1 className="text-center">This is another test</h1>
+          <div id="hints">
+            <i className="fa fa-times icon" aria-hidden="true" onClick={this.close}></i>
+            <h1 className="text-center hint">{this.state.hint1 ? this.state.planet.hint1() : null}</h1>
+            <h1 className="text-center hint">{this.state.hint2 ? this.state.planet.hint2() : null}</h1>
+            <h1 className="text-center hint">{this.state.hint3 ? this.state.planet.hint3() : null}</h1>
+            <button
+              className={this.state.hintsLeft > 0 ? "btn btn-success pull-right" : "hide"}
+              type="button"
+              disabled={this.state.end ? true : false}
+              onClick={this.getHint}
+            >
+              Give me another hint
+            </button>
+          </div>
         </Modal>
       </div>
     );

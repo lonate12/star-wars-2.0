@@ -5,6 +5,9 @@ $icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 // Import Bootstrap
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 
+// Colors
+$yellow: yellow;
+$black: black;
 
 *,
 *::before,
@@ -23,6 +26,7 @@ img {
 
 body {
   color: white;
+  font-family: 'star';
 }
 
 // General formatting for containers
@@ -99,4 +103,49 @@ body {
 .letters-guessed {
   font-size: 30px;
 
+}
+
+.btn-success {
+  font-family: 'star';
+  border: 1px solid darken($yellow, 20%);
+  background-color: yellow;
+  color: black;
+}
+
+.btn-success:hover {
+  border: 1px solid darken($yellow, 20%);
+  background-color: lighten($yellow, 20%);
+  color: black;
+}
+
+.btn-success:focus {
+  border: 1px solid darken($yellow, 20%);
+  background-color: lighten($yellow, 20%);
+  color: black;
+}
+
+.modal-content {
+  position: relative;
+
+  .icon {
+    color: white;
+    position: absolute;
+    top: -22px;
+    right: 3px;
+    font-size: 20px;
+  }
+  .hint {
+    color: black;
+  }
+}
+
+
+.playing-field {
+  background-image: url('../images/star-wars-space-bg.jpg');
+  background-size: cover;
+  background-position: center center;
+
+  .outline {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  }
 }
