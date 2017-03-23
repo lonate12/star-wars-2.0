@@ -25,6 +25,7 @@ img {
 }
 
 body {
+  background-color: black;
   color: white;
   font-family: 'star';
 }
@@ -32,8 +33,9 @@ body {
 // General formatting for containers
 
 .fs-container {
-  height: 100vh;
+  min-height: 100vh;
   background-color: black;
+  position: relative;
 }
 
 // Main logo animation stuff
@@ -48,6 +50,7 @@ body {
   border-radius: 6px;
   background-color: yellow;
   font-family: 'star', serif;
+  color: black;
 }
 
 
@@ -165,13 +168,23 @@ body {
 // Media queries
 
 @media only screen and (max-width: 992px) {
+  .outline {
+    font-size: 35px;
+  }
+
   #word-container {
     margin-top: 33vh;
+  }
+
+  .start-button-div {
+    position: absolute;
+    bottom: 10px;
+    width: 100vw;
   }
 }
 
 @media only screen and (max-width: 480px) {
   .outline {
-    font-size: 14px;
+    font-size: 20px;
   }
 }

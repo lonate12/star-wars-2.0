@@ -12,9 +12,9 @@ var StartScreen = React.createClass({
     var self = this;
 
     document.getElementById('logo').addEventListener("transitionend", namedFunction);
-    
+
     function namedFunction(){
-      document.getElementById('logo').removeEventListener("transitionend", namedFunction);
+      // document.getElementById('logo').removeEventListener("transitionend", namedFunction);
       self.setState({loadCompleted: true});
       document.getElementsByTagName('audio')[0].play();
     }
@@ -24,14 +24,15 @@ var StartScreen = React.createClass({
     });
   },
   nextScreen: function(){
-    console.log('fired next screen button');
     Backbone.history.navigate('welcome/', {trigger: true});
   },
   render: function(){
     return(
       <div className="row fs-container">
         <img  id="logo" src="./images/star-wars-logo.svg" className="center-block"></img>
-        <button onClick={this.nextScreen} className={this.state.loadCompleted ? "start-button center-block" : "hide"}>Click here to begin!!!</button>
+        <div className="start-button-div">
+          <button onClick={this.nextScreen} className={this.state.loadCompleted ? "start-button center-block" : "hide"}>Click here to begin!!!</button>
+        </div>
         <audio src="sounds/star-wars-theme-song.mp3"></audio>
       </div>
     );
