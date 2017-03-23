@@ -36,7 +36,6 @@ var AppRouter = Backbone.Router.extend({
     );
   },
   play: function(thing){
-    console.log('triggered');
     ReactDOM.render(
       React.createElement(GameContainer, {thing: thing}),
       document.getElementById('app')

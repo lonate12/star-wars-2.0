@@ -49,9 +49,11 @@ var GameContainer = React.createClass({
     return winningScore;
   },
   loadData: function(){
-    var thing = this.state.thing;
-    var self = this;
+    var thing = this.state.thing, self = this;
 
+    /* Need to incorporate error messages incase SWAPI API is not reachable.
+    Perhaps it would be beneficial to create a word bank to allow play to
+    continue in the event that SWAPI is not available. */
     thing.fetch().then(function(){
       var nameArray = thing.get('name').toLowerCase().split('');
 
@@ -70,7 +72,6 @@ var GameContainer = React.createClass({
     });
   },
   componentWillMount: function(){
-    console.log(this.props.thing);
     var self = this;
 
     this.state.thing.getCount(self.loadData);
@@ -86,17 +87,17 @@ var GameContainer = React.createClass({
   },
   checkGuess: function(e){
     e.preventDefault();
-    var guess = this.state.guess;
-    var nameArray = this.state.thing.get('nameArray');
-    var lettersGuessed = this.state.lettersGuessed;
-    var i = -1;
-    var self = this;
+    var guess = this.state.guess,
+        nameArray = this.state.thing.get('nameArray'),
+        lettersGuessed = this.state.lettersGuessed,
+        i = -1,
+        self = this;
 
     if (lettersGuessed.indexOf(guess) === -1) {
       this.state.lettersGuessed.push(guess);
 
       if (nameArray.indexOf(guess) === -1) {
-        console.log('Wrong!');
+        // Flash red and "That's incorrect"
 
         this.state.guessesLeft === 1 ? this.state.end = true : null;
         this.setState({
@@ -112,10 +113,9 @@ var GameContainer = React.createClass({
 
           document.getElementById('word-container').querySelectorAll('h2')[i].appendChild(document.createTextNode(self.state.guess));
         });
-        console.log('Yep, it\'s there.');
       }
     } else {
-      console.log('You have already guessed this letter.');
+      // Flash You've already guessed this letter
     }
 
     this.setState({guess: ''});
@@ -149,10 +149,9 @@ var GameContainer = React.createClass({
   },
   render: function(){
     console.log(this.state.thing.get('name'));
-    console.warn(this.state.score);
-    var thing = this.state.thing;
-    var emptyDivs;
-    var lettersUsed = this.state.lettersGuessed.map(function(letter, i){
+    var thing = this.state.thing,
+        emptyDivs,
+        lettersUsed = this.state.lettersGuessed.map(function(letter, i){
       return(
         <span className="letters-guessed" key={i}>{letter}</span>
       )
@@ -174,16 +173,19 @@ var GameContainer = React.createClass({
 
     return(
       <div className={this.props.thing === 'planet' ? "row fs-container playing-field bg-planet" : "row fs-container playing-field bg-person"}>
-        <div className="col-md-12 clear-fix">
-          <div className="guess-left pull-left">
-            <h1 className="outline">Guesses Left: {this.state.guessesLeft}</h1>
+        <div className="col-xs-12 clear-fix">
+          <div className="guess-left pull-left text-center">
+            <h1 className="outline">Guesses Left:</h1>
+            <h1 className="count">{this.state.guessesLeft}</h1>
           </div>
-          <div className="pull-right">
-            <h1 className="outline">Hints left: {this.state.hintsLeft}</h1>
+          <div className="pull-right text-center">
+            <h1 className="outline">Hints left:</h1>
+            <h1 className="count">{this.state.hintsLeft}</h1>
             <button className="btn btn-success pull-right" type="button" onClick={this.open}>Show Hints</button>
           </div>
         </div>
         <div id="word-container" className="text-center">
+          <h1>Placeholder</h1>
           {emptyDivs}
         </div>
         <div className="text-center">

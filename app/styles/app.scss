@@ -141,6 +141,10 @@ body {
   }
 }
 
+.letters-guessed {
+  margin: 10px;
+}
+
 .bg-planet {
   background-image: url('../images/star-wars-space-bg.jpg');
 }
@@ -155,5 +159,19 @@ body {
 
   .outline {
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  }
+}
+
+// Media queries
+
+@media only screen and (max-width: 992px) {
+  #word-container {
+    margin-top: 33vh;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .outline {
+    font-size: 14px;
   }
 }
