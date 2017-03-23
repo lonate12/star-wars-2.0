@@ -141,9 +141,15 @@ body {
   }
 }
 
+.bg-planet {
+  background-image: url('../images/star-wars-space-bg.jpg');
+}
+
+.bg-person {
+  background-image: url('../images/star-wars-person-bg.jpg');
+}
 
 .playing-field {
-  background-image: url('../images/star-wars-space-bg.jpg');
   background-size: cover;
   background-position: center center;
 

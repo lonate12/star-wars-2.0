@@ -33,7 +33,7 @@ var WelcomeScreen = React.createClass({
           </ol>
         </div>
 
-        <button onClick={this.nextScreen} type="button">I'm ready, let's do this!</button>
+        <button onClick={this.nextScreen} type="button" className="btn btn-success">Ready, let's do this!</button>
         <audio src="sounds/force2.mp3"></audio>
 
       </div>

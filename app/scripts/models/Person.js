@@ -3,12 +3,12 @@ var $ = require('jquery');
 
 var Person = Thing.extend({
   defaults: {
-    thing: 'people'
+    thing: 'person'
   },
   urlRoot: function(){
     return 'http://swapi.co/api/people/' + this.get('number') + '/';
   },
-  loadHints: function(){
+  loadHints: function(callback){
     var self = this;
 
     Promise.all([$.ajax(this.get('homeworld')), $.ajax(this.get('species')[0])]).then(function(responses){
@@ -16,6 +16,8 @@ var Person = Thing.extend({
         homeworld: responses[0].name,
         species: responses[1].name
       });
+
+      callback();
     });
   },
   hint1: function(){

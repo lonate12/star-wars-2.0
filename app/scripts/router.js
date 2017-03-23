@@ -7,8 +7,7 @@ var ReactDOM = require('react-dom');
 var StartScreen = require('./components/startScreen.jsx').StartScreen;
 var WelcomeScreen = require('./components/welcomeScreen.jsx').WelcomeScreen;
 var SelectScreen = require('./components/selectScreen.jsx').SelectScreen;
-var PeopleContainer = require('./components/peopleContainer.jsx').PeopleContainer;
-var PlanetsContainer = require('./components/planetsContainer.jsx').PlanetsContainer;
+var GameContainer = require('./components/gameContainer.jsx').GameContainer;
 
 
 var AppRouter = Backbone.Router.extend({
@@ -16,8 +15,7 @@ var AppRouter = Backbone.Router.extend({
     '': 'index',
     'welcome/': 'welcome',
     'select/': 'select',
-    'people/': 'people',
-    'planets/': 'planets'
+    'play/:thing': 'play'
   },
   index: function(){
     ReactDOM.render(
@@ -37,15 +35,10 @@ var AppRouter = Backbone.Router.extend({
       document.getElementById('app')
     );
   },
-  people: function(){
+  play: function(thing){
+    console.log('triggered');
     ReactDOM.render(
-      React.createElement(PeopleContainer),
-      document.getElementById('app')
-    );
-  },
-  planets: function(){
-    ReactDOM.render(
-      React.createElement(PlanetsContainer),
+      React.createElement(GameContainer, {thing: thing}),
       document.getElementById('app')
     );
   }

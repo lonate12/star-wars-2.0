@@ -1,19 +1,21 @@
 // 3rd Party Imports
 var React = require('react');
-var Planet = require('../models/Planet').Planet;
 var $ = require('jquery');
 var Modal = require('react-bootstrap').Modal;
 
 
 // Local Imports
+var Planet = require('../models/Planet').Planet;
+var Person = require('../models/Person').Person;
 var WinningScreen = require('./display/win.jsx').WinningScreen;
+var GuessForm = require('./display/guessForm.jsx').GuessForm;
 
-var PlanetsContainer = React.createClass({
+var GameContainer = React.createClass({
   getInitialState: function(){
-    var planet = new Planet();
+    var thing = this.props.thing === "planet" ? new Planet() : new Person();
 
     return{
-      planet: planet,
+      thing: thing,
       guessesLeft: 5,
       hintsLeft: 3,
       lettersGuessed: [],
@@ -47,30 +49,31 @@ var PlanetsContainer = React.createClass({
     return winningScore;
   },
   loadData: function(){
-    var planet = this.state.planet;
+    var thing = this.state.thing;
     var self = this;
 
-    planet.fetch().then(function(){
-      var nameArray = planet.get('name').toLowerCase().split('');
+    thing.fetch().then(function(){
+      var nameArray = thing.get('name').toLowerCase().split('');
 
-      planet.set({
-        name: planet.get('name').toLowerCase(),
+      thing.set({
+        name: thing.get('name').toLowerCase(),
         nameArray: nameArray,
         winningScore: self.getWinningScore(nameArray)
       });
 
-      console.log(self.state.planet);
+      console.log(self.state.thing);
 
-      self.setState({planet: planet});
-      planet.loadHints(function(){
-        self.setState({planet:planet});
+      self.setState({thing: thing});
+      thing.loadHints(function(){
+        self.setState({thing:thing});
       });
     });
   },
   componentWillMount: function(){
+    console.log(this.props.thing);
     var self = this;
 
-    this.state.planet.getCount(self.loadData);
+    this.state.thing.getCount(self.loadData);
   },
   getIndexes: function(arr, val){
     var indexes = [], i=-1;
@@ -84,7 +87,7 @@ var PlanetsContainer = React.createClass({
   checkGuess: function(e){
     e.preventDefault();
     var guess = this.state.guess;
-    var nameArray = this.state.planet.get('nameArray');
+    var nameArray = this.state.thing.get('nameArray');
     var lettersGuessed = this.state.lettersGuessed;
     var i = -1;
     var self = this;
@@ -125,7 +128,6 @@ var PlanetsContainer = React.createClass({
   },
   getHint: function(){
     if (this.state.hintsLeft <= 0) {
-      console.log('Sorry, no hints left.');
     } else {
 
       switch (this.state.hintsLeft) {
@@ -143,13 +145,12 @@ var PlanetsContainer = React.createClass({
       this.setState({
         hintsLeft: this.state.hintsLeft - 1
       });
-      console.log('hint should now show');
     }
   },
   render: function(){
-    console.log(this.state.planet.get('name'));
+    console.log(this.state.thing.get('name'));
     console.warn(this.state.score);
-    var planet = this.state.planet;
+    var thing = this.state.thing;
     var emptyDivs;
     var lettersUsed = this.state.lettersGuessed.map(function(letter, i){
       return(
@@ -157,8 +158,8 @@ var PlanetsContainer = React.createClass({
       )
     });
 
-    if(planet.get('nameArray')){
-      emptyDivs = planet.get('nameArray').map(function(letter, i){
+    if(thing.get('nameArray')){
+      emptyDivs = thing.get('nameArray').map(function(letter, i){
         if (letter === " " | "-") {
           return(
             <h2 className = "box" key = {i}></h2>
@@ -172,7 +173,7 @@ var PlanetsContainer = React.createClass({
     }
 
     return(
-      <div className="row fs-container playing-field">
+      <div className={this.props.thing === 'planet' ? "row fs-container playing-field bg-planet" : "row fs-container playing-field bg-person"}>
         <div className="col-md-12 clear-fix">
           <div className="guess-left pull-left">
             <h1 className="outline">Guesses Left: {this.state.guessesLeft}</h1>
@@ -188,23 +189,13 @@ var PlanetsContainer = React.createClass({
         <div className="text-center">
           {lettersUsed}
         </div>
-        <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.planet.get('name') ? this.state.planet.get('name').toLowerCase() : null}</div>
-        <form onSubmit={this.checkGuess} className={this.state.end ? "hide" : "text-center"} autoComplete="off">
-          <div className="form-group width-letter-size text-center">
-            <label htmlFor="guess" className="hidden">Enter Guess</label>
-            <input
-              className="form-control"
-              type="text"
-              id="guess"
-              autoFocus="true"
-              name="guess"
-              onChange={this.updateGuess}
-              value={this.state.guess}
-              maxLength="1"
-            ></input>
-          </div>
-        <button type="submit" className="btn btn-success">Submit guess</button>
-        </form>
+        <div className={this.state.end ? null : "hide"}>Sorry, you lost. The word was {this.state.thing.get('name') ? this.state.thing.get('name').toLowerCase() : null}</div>
+        <GuessForm
+          checkGuess = {this.checkGuess}
+          end = {this.state.end}
+          value = {this.state.guess}
+          updateGuess = {this.updateGuess}
+        />
         <Modal
           animation={true}
           show={this.state.showModal}
@@ -212,9 +203,9 @@ var PlanetsContainer = React.createClass({
         >
           <div id="hints">
             <i className="fa fa-times icon" aria-hidden="true" onClick={this.close}></i>
-            <h1 className="text-center hint">{this.state.hint1 ? this.state.planet.hint1() : null}</h1>
-            <h1 className="text-center hint">{this.state.hint2 ? this.state.planet.hint2() : null}</h1>
-            <h1 className="text-center hint">{this.state.hint3 ? this.state.planet.hint3() : null}</h1>
+            <h1 className="text-center hint">{this.state.hint1 ? this.state.thing.hint1() : null}</h1>
+            <h1 className="text-center hint">{this.state.hint2 ? this.state.thing.hint2() : null}</h1>
+            <h1 className="text-center hint">{this.state.hint3 ? this.state.thing.hint3() : null}</h1>
             <button
               className={this.state.hintsLeft > 0 ? "btn btn-success pull-right" : "hide"}
               type="button"
@@ -230,6 +221,28 @@ var PlanetsContainer = React.createClass({
   }
 });
 
+//
+var oldFormStuff = function(){
+  return (
+    <form onSubmit={this.checkGuess} className={this.state.end ? "hide" : "text-center"} autoComplete="off">
+      <div className="form-group width-letter-size text-center">
+        <label htmlFor="guess" className="hidden">Enter Guess</label>
+        <input
+          className="form-control"
+          type="text"
+          id="guess"
+          autoFocus="true"
+          name="guess"
+          onChange={this.updateGuess}
+          value={this.state.guess}
+          maxLength="1"
+        ></input>
+      </div>
+    <button type="submit" className="btn btn-success">Submit guess</button>
+    </form>
+  )
+};
+
 module.exports = {
-  PlanetsContainer: PlanetsContainer
+  GameContainer: GameContainer
 };
