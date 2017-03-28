@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 var Person = Thing.extend({
   defaults: {
-    thing: 'person'
+    thing: 'people'
   },
   urlRoot: function(){
     return 'http://swapi.co/api/people/' + this.get('number') + '/';

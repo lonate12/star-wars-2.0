@@ -185,7 +185,6 @@ var GameContainer = React.createClass({
           </div>
         </div>
         <div id="word-container" className="text-center">
-          <h1>Placeholder</h1>
           {emptyDivs}
         </div>
         <div className="text-center">

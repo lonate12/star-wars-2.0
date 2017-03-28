@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 var Planet = Thing.extend({
   defaults: {
-    thing: 'planet'
+    thing: 'planets'
   },
   urlRoot: function(){
     return 'http://swapi.co/api/planets/' + this.get('number') + '/';
